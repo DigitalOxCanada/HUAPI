@@ -1,0 +1,82 @@
+﻿@page
+@model HUAPICore.Pages.Tools.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Profile Custom Form Scrape Definition</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ScrapeQuery.Id" />
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.DocType" class="control-label"></label>
+                <input asp-for="ScrapeQuery.DocType" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.DocType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.FormName" class="control-label"></label>
+                <input asp-for="ScrapeQuery.FormName" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.FormName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.Group" class="control-label"></label>
+                <input asp-for="ScrapeQuery.Group" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.Group" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.Created" class="control-label"></label>
+                <input asp-for="ScrapeQuery.Created" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.Created" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        Is Active: <input asp-for="ScrapeQuery.IsActive" /> @*@Html.DisplayNameFor(model => model.IsActive)*@
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.DropQ" class="control-label"></label>
+                <input asp-for="ScrapeQuery.DropQ" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.DropQ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.CreateQ" class="control-label"></label>
+                <input asp-for="ScrapeQuery.CreateQ" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.CreateQ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.SelectQ" class="control-label"></label>
+                <input asp-for="ScrapeQuery.SelectQ" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.SelectQ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.DeltaQ" class="control-label"></label>
+                <input asp-for="ScrapeQuery.DeltaQ" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.DeltaQ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScrapeQuery.Order" class="control-label"></label>
+                <input asp-for="ScrapeQuery.Order" class="form-control" />
+                <span asp-validation-for="ScrapeQuery.Order" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

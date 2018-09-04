@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>HUAPI SYSTEM Need Code</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="/lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/lib/animate.min.css" />
+    <link rel="stylesheet" href="/css/site.min.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
+    <script type="text/javascript" src="/js/jquery210.min.js"></script>
+    <script type="text/javascript" src="/lib/jquery.countdown.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+        #countdown {
+            font-size: 50px;
+            -webkit-animation-duration: 3s;
+            -webkit-animation-delay: 1s;
+            -webkit-animation-iteration-count: 1;
+        }
+
+        body {
+            padding-top: 60px;
+            background-color: yellow;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="header">
+        <div class="navbar navbar-fixed-top" style="z-index: 10;">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#">Code Required</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row-fluid">
+
+            <div id="content" class="span12">
+
+                <div class="well span9" style="text-align: center;">
+                    <h3>Requested API call</h3>
+                    <p style="font-size: 24px;line-height: 24px;" id="api"></p>
+                </div>
+                <div class="span9">
+
+                    <legend>What is this?</legend>
+                    <div class="row-fluid">
+                        The API you requested requires a second level confirmation step.  The code provided is only valid for a short period and then a new code will be required.  This helps prevent accidental execution of critical functions.
+                        Please enter the code below to execute your API.
+                    </div>
+
+                </div>
+
+                <div class="well span6" style="text-align: center;">
+                    <h3>Required Code</h3>
+                    <p id="thecode" style="font-size: 54px;line-height: 54px;">0</p>
+                </div>
+
+                <div class="well span6" style="text-align: center;">
+                    <h3>Enter Code</h3>
+                    <input id="newcode" style="font-size: 46px;line-height: 46px;" />
+                    <br /><br />
+                    <button id="btnExecuteAPI" type="button" class="btn btn-success" onclick="executeAPI()">Execute API</button>
+                    <br><br>
+                    Code Expires:
+                    <div class="well" id="countdown" style="text-align: center;">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <footer class="footer"></footer>
+
+    </div>
+
+    <script>
+
+    function executeAPI() {
+        var api = "{{api}}";
+        var cod = "{{apicode}}";
+
+        if(cod !== $('#newcode').val()) {
+            alert('The code you entered does not match.');
+        }else{
+            $('#btnExecuteAPI').prop("disabled",true);
+            $('#btnExecuteAPI').text("Executing....");
+
+            // similar behavior as an HTTP redirect
+            window.location.replace(api + "?apicode=" + cod);
+        }
+        $('#newcode').val("");
+    }
+
+    $(document).ready(function () {
+
+        var api = "{{api}}";
+        var cod = "{{apicode}}";
+        var tl = "{{tl}}";
+
+        $('#thecode').html(cod);
+        $('#api').html(api);
+
+        ////ticks are in nanotime; convert to microtime
+        //var ticksToMicrotime = tl / 10000;
+
+        ////ticks are recorded from 1/1/1; get microtime difference from 1/1/1/ to 1/1/1970
+        //var epochMicrotimeDiff = 2208988800000;
+
+        ////new date is ticks, converted to microtime, minus difference from epoch microtime
+        //var tickDate = new Date(ticksToMicrotime - epochMicrotimeDiff);
+        var later = new Date(tl);
+        //var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+      
+        $('#countdown').countdown(later, function (event) {
+            $(this).html(event.strftime('%H:%M:%S'));
+        }).on('finish.countdown', function (event) {
+            $('#btnExecuteAPI').prop("disabled", true);
+            $('#btnExecuteAPI').text("Code Expired");
+            $('#countdown').text("Code Expired");
+            $('#newcode').prop("disabled", true);
+            $('#thecode').css("text-decoration", "line-through");
+            $("body").css("background-color", "red");
+         });
+
+        $('#countdown').addClass('animated slideInRight');
+
+    });
+
+    </script>
+
+</body>
+</html>

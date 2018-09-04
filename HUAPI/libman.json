@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "defaultDestination": "wwwroot/lib/",
+  "libraries": [
+    {
+      "library": "twitter-bootstrap@4.1.3",
+      "files": [ "css/bootstrap.min.css", "js/bootstrap.min.js" ],
+      "destination": "wwwroot/lib/"
+    },
+    {
+      "library": "jquery@3.3.1",
+      "files": [ "jquery.min.js" ]
+    },
+    {
+      "library": "font-awesome@4.7.0",
+      "files": [ "css/font-awesome.min.css" ],
+      "destination": "wwwroot/lib/"
+    },
+    {
+      "library": "animate.css@3.7.0",
+      "files": [ "animate.min.css" ]
+    },
+    {
+      "library": "jquery-validate@1.17.0",
+      "files": ["jquery.validate.min.js"]      
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.10",
+      "files": [ "jquery.validate.unobtrusive.min.js" ]
+    },
+    {
+      "library": "jquery.countdown@2.2.0",
+      "files": [ "jquery.countdown.min.js" ]
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "files": [ "jquery-ui.min.css", "jquery-ui.min.js" ]
+    }
+    //{
+    //  "library": "metro@4.2.19",
+    //  "files": [ "js/metro.min.js", "css/metro-all.min.css" ]
+    //}
+  ]
+}

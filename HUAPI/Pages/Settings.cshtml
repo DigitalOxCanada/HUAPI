@@ -1,0 +1,115 @@
+﻿@page
+@model SettingsModel
+@{
+    ViewData["Title"] = "Settings";
+}
+
+@using Microsoft.Extensions.Options;
+@using HUAPICore.Interfaces;
+@using HUAPICore.Services;
+
+@inject ISettings _settings
+@{
+    var MySettings = _settings;
+}
+
+@inject IOptions<CustomConfig> MyConfigOptions
+@{
+    var MyConfig = MyConfigOptions.Value;
+}
+<script>
+
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Settings</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+@*this is using Razor OnPost method*@
+@using (Html.BeginForm(FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <label>Is Live</label><br />
+    <label class="switch">
+        @Html.CheckBox("IsLive", Model.IsLive == true ? true : false, new { onclick = "this.form.submit();" })
+        <span class="slider round"></span>
+    </label>
+}
+
+@*this is using jQuery Ajax post jquery code in site.js*@
+@*<div>
+        Go Live<br />
+        <label class="switch">
+            <input name = "IsLive" id="IsLive" type="checkbox" @(@Model.IsLive == true ? "checked" : "") onclick="changeGoLive();">
+            <span class="slider round"></span>
+        </label>
+    </div>*@
+
+@if (!Model.IsLive)
+{
+    <div class="customlabel warning">
+        <span class="badge badge-warning">Warning</span> The system is not live. Tasks are paused and major functionality is halted but most API calls are still callable.
+    </div>
+}
+
+<div class="customlabel info">
+    <span class="badge badge-info">Info</span>The settings are read-only while the application is currently running.Settings are changed in the appsettings.json file.
+</div>
+
+
+@{ if (Model.ScrapeJob == null)
+    {
+        <div class="customlabel warning">
+            <p>
+                <span class="badge badge-warning">Warning</span> The daily custom form scraper job doesn't exist. Create it now?
+                @using (Html.BeginForm(FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="submit" asp-page-handler="CreateJob" value="Create Job">
+                }
+
+            </p>
+        </div>
+
+    }
+}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <caption>Base Config</caption>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>Server Jaffa Path</td>
+            <td>@MyConfig.SystemConfig.ServerJaffaPath</td>
+            <td>This is the path to save the jaffa files to get imported.</td>
+        </tr>
+        <tr>
+            <td>Scrape Custom Forms CRON Schedule</td>
+            <td>@MyConfig.SystemConfig.ScrapeCustomFormsCRON</td>
+            <td>Schedule of the recurring job to scrape the custom forms.</td>
+        </tr>
+        <tr>
+            <td>SMS Service Type</td>
+            <td>@MyConfig.SystemConfig.SMSService.ServiceType</td>
+            <td>SMS Service Type (Exchange, Wire2Air, Twilio)</td>
+        </tr>
+        @*<tr>
+                <td>test</td>
+                <td>@_settings.Settings["test"]</td>
+                <td>just a test entry from the database</td>
+            </tr>*@
+    </table>
+</div>
+
+@*<h1 class="text-danger">Error.</h1>
+    <h2 class="text-danger">An error occurred while processing your request.</h2>*@
+

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<eFModelDiagram dslVersion="1.2.5.0" Id="52b8a2bf-79c1-4ff9-80c9-13dd532f2ff6" absoluteBounds="0, 0, 11.125, 8.5" name="HUAPI">
+  <modelRootMoniker Id="cba47279-0950-4257-bb2c-e4d5e72a52a4" />
+  <nestedChildShapes>
+    <classShape Id="030105fe-c08b-4ede-b158-58dc802036b6" absoluteBounds="0.75, 0.75, 1.5, 2.7747054036458332" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" visible="true" outlineThickness="0.01">
+      <modelClassMoniker Id="e4e5a17d-9ff7-462f-aed8-f82853d88f88" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ab0bc99c-71fb-45c9-bbbd-15810cf3fccb" absoluteBounds="0.76500000000000012, 1.06, 1.4700000000000002, 2.364705403645833" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a5e5e706-29fb-4ede-ae3f-c536817a00ad" absoluteBounds="3.75, 0.75, 2, 1.2362939453125001" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" visible="true" outlineThickness="0.01">
+      <modelClassMoniker Id="db839606-ac13-4326-991b-3b32d1794207" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6d45664b-927e-44ad-8331-376acb07e2d5" absoluteBounds="3.7649999999999997, 1.06, 1.9700000000000002, 0.8262939453125" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1bcc9f19-2f60-41fb-91a0-204d8f180679" absoluteBounds="6.5, 0.875, 1.5, 1.2362939453125001" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" visible="true" outlineThickness="0.01">
+      <modelClassMoniker Id="44b07220-0b15-470a-beaa-80167fc31e99" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d34b5e60-1fe5-4cbd-88ac-ca79d28b7a78" absoluteBounds="6.515, 1.185, 1.4700000000000002, 0.8262939453125" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a1f17d49-448f-4ea4-add4-4422333999d6" absoluteBounds="3.5, 2.375, 1.5, 1.4285953776041667" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" visible="true" outlineThickness="0.01">
+      <modelClassMoniker Id="dc892159-6436-4268-b50f-0098effb2dee" />
+      <nestedChildShapes>
+        <elementListCompartment Id="819cb653-d84a-4b1d-9abd-d8f2c6c593dc" absoluteBounds="3.5150000000000006, 2.685, 1.4700000000000002, 1.0185953776041665" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <enumShape Id="19c690e5-b522-41c2-be56-3452c4f051eb" absoluteBounds="8.875, 0.5, 1.5, 1.4285953776041667" fillColor="Gray" textColor="White" outlineColor="Black" visible="true" outlineThickness="0.01" outlineDashStyle="Solid">
+      <modelEnumMoniker Id="9729e2eb-8566-447a-88b2-2b31c4f796a7" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fb430849-b942-48ab-a39e-58ce868e5a58" absoluteBounds="8.89, 0.81, 1.4700000000000002, 1.0185953776041665" name="ValuesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </enumShape>
+    <classShape Id="ec7eeb25-07a0-46aa-878e-01b6e705a673" absoluteBounds="8.375, 3.25, 2.5, 1.4285953776041662" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" visible="true" outlineThickness="0.01">
+      <modelClassMoniker Id="bf6955d8-b462-473f-be17-62c563e36dc5" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e6b28b2c-214b-44b3-9f2b-b0803abe8854" absoluteBounds="8.39, 3.56, 2.4699999999999998, 1.0185953776041665" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bb9f877b-3d87-4bba-8f7e-e15b4b5e5065" absoluteBounds="5.875, 3.375, 1.5, 1.2362939453124993" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" visible="true" outlineThickness="0.01">
+      <modelClassMoniker Id="f9edf366-5af6-4b52-9fc3-960a358e2190" />
+      <nestedChildShapes>
+        <elementListCompartment Id="791a6893-9118-4e5a-be13-57317b8815a7" absoluteBounds="5.8900000000000006, 3.6849999999999996, 1.4700000000000002, 0.8262939453125" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</eFModelDiagram>

@@ -1,0 +1,49 @@
+﻿@page
+@model HUAPICore.Pages.FWLink.IndexModel
+
+@{
+    ViewData["Title"] = "FWLink";
+}
+
+<h2>FWLink</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FWLink[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FWLink[0].Url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FWLink[0].Created)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FWLink) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                <a href="/fwlink/@Html.DisplayFor(modelItem => item.Id)" alt="/fwlink/@Html.DisplayFor(modelItem => item.Id)" target="_blank">Test</a> |
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

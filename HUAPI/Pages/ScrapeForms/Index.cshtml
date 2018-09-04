@@ -1,0 +1,90 @@
+﻿@page
+@model HUAPICore.Pages.Tools.ScrapeFormsModels
+
+@{
+    ViewData["Title"] = "Profile Forms To Scrape";
+}
+
+<h2>Profile Forms to Scrape</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].DocType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].FormName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].Group)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].IsActive)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].DropQ)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].CreateQ)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].SelectQ)
+            </th>*@
+            @*<th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].DeltaQ)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ScrapeQuery[0].Order)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ScrapeQuery) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FormName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.DropQ)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateQ)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SelectQ)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeltaQ)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Order)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

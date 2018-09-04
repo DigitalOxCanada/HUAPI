@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HUAPI</title>
+
+
+
+    <environment include="Development">
+    </environment>
+    <environment exclude="Development">
+    </environment>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/css/metro-bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.min.css" />
+
+    <script type="text/javascript">
+        var themeName = location.hash.split('#/')[1];
+        themeName = themeName ? themeName : 'bootstrap';
+        document.write('<link href="/css/' + themeName + '.css" rel="stylesheet" />');
+
+        if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+            document.write('<script src="js/bluebird.min.js"><\/script>');
+        }
+    </script>
+
+
+    <script src="~/js/common.min.js"></script>
+    <script src="~/js/ej2.min.js"></script>
+
+</head>
+<body>
+    <div class="col-lg-12 col-sm-12 col-md-12">
+        <div id="wrapper">
+            <div id="dockSidebar">
+                <div>
+                    <div class="sidelogo"></div>
+                </div>
+                @*<img id="sidelogo" src="~/images/brand/digitalox2.png" />*@
+                <div class="dock">
+                    <ul>
+                        <li class="sidebar-item" id="toggle">
+                            <span class="e-icons expand"></span>
+                            <span class="e-text" title="menu">Menu</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="/">
+                                <span class="e-icons home"></span>
+                                <span class="e-text" title="home">Home</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="/settings">
+                                <span class="e-icons fas fa-cogs"></span>
+                                <span class="e-text" title="settings">Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="main">
+                <div class="col-md-12">
+                    @if (@Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production")
+                    {
+                        <div class="" style="width: 100%;">
+                            <div class="customlabel warning">
+                                <span class="badge badge-warning">Warning</span>Environment: @Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                            </div>
+                        </div>
+                    }
+                    @RenderBody()
+                </div>
+                <hr />
+                <footer>
+                    <p>&copy; 2018 - HUAPI</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/lib/jquery.min.js"></script>
+    @*<script src="~/lib/js/jquery.countdown.min.js"></script>*@
+    <script src="~/lib/jquery-ui.min.js"></script>
+    <script src="~/lib/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <environment include="Development">
+    </environment>
+    <environment exclude="Development">
+    </environment>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            dockBar = document.getElementById('dockSidebar').ej2_instances[0];
+            document.getElementById('toggle').onclick = function () {
+                dockBar.toggle();
+            };
+        });
+
+    </script>
+
+
+    <style>
+        .sidelogo {
+            background: url("/images/brand/huapi.png") no-repeat center;
+            height: 75px;
+        }
+    </style>
+
+    <script>
+        var Sidebarkevoekaiyl0 = new ejs.navigations.Sidebar({
+            "dockSize": "72px",
+            "enableDock": true,
+            "width": "220px"
+        });
+        Sidebarkevoekaiyl0.appendTo("#dockSidebar");
+    </script>
+    @RenderSection("PreScripts", required: false)
+    <ejs-scripts></ejs-scripts>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

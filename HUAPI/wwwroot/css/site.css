@@ -1,0 +1,262 @@
+body {
+    /*padding-top: 50px;*/
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+body, html, .row-offcanvas {
+    height: 100%;
+}
+
+
+#sidebar {
+    width: inherit;
+    min-width: 180px;
+    max-width: 180px;
+    background-color: #f5f5f5;
+    float: left;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#main {
+    height: 100%;
+    overflow: auto;
+}
+
+/*
+ * off Canvas sidebar
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 768px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all 0.25s ease-out;
+        -moz-transition: all 0.25s ease-out;
+        transition: all 0.25s ease-out;
+        width: calc(100% + 220px);
+    }
+
+    .row-offcanvas-left {
+        left: -220px;
+    }
+
+        .row-offcanvas-left.active {
+            left: 0;
+        }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+    }
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.customlabel {
+    margin-bottom: 12px;
+    padding: 4px 12px;
+}
+.danger {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+}
+
+.success {
+    background-color: #ddffdd;
+    border-left: 6px solid #4CAF50;
+}
+
+.info {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196F3;
+}
+
+
+.warning {
+    background-color: #ffffcc;
+    border-left: 6px solid #ffeb3b;
+}
+
+
+/* Sidebar styles */
+
+.sb-content-tab #wrapper {
+    display: none;
+}
+
+#dockSidebar.e-sidebar.e-right.e-close {
+    visibility: visible;
+    transform: translateX(0%);
+}
+
+#dockSidebar .e-icons::before {
+    font-size: 25px;
+}
+
+/* dockbar icon Style */
+
+#dockSidebar .home::before {
+    content: '\e7a4';
+}
+
+.e-sidebar .expand::before,
+.e-sidebar.e-right.e-open .expand::before {
+    content: '\e85c';
+}
+
+.e-sidebar.e-open .expand::before,
+.e-sidebar.e-right .expand::before {
+    content: '\e98f';
+}
+
+/* end of dockbar icon Style */
+
+#dockSidebar.e-close .sidebar-item {
+    padding: 5px 20px;
+}
+
+#dockSidebar.e-dock.e-close span.e-text {
+    display: none;
+}
+
+#dockSidebar.e-dock.e-open span.e-text {
+    display: inline-block;
+}
+
+#dockSidebar li {
+    list-style-type: none;
+    cursor: pointer;
+}
+
+#dockSidebar ul {
+    padding: 0px;
+}
+
+#dockSidebar.e-sidebar ul li:hover span {
+    color: white
+}
+
+#dockSidebar span.e-icons {
+    color: #c0c2c5;
+    line-height: 2
+}
+
+.e-open .e-icons {
+    margin-right: 16px;
+}
+
+.e-open .e-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 23px;
+    font-size: 15px;
+}
+
+.sidebar-item {
+    text-align: center;
+    border-bottom: 1px #e5e5e5 solid;
+}
+
+.e-sidebar.e-open .sidebar-item {
+    text-align: left;
+    padding-left: 15px;
+    color: #c0c2c5;
+}
+
+#dockSidebar.e-sidebar {
+    background: #2d323e;
+    overflow: hidden;
+}
+
+/* end of sidebar styles */

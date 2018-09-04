@@ -1,0 +1,141 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@using Syncfusion.EJ2
+@{
+    var Modalanimation = new Syncfusion.EJ2.Popups.DialogAnimationSettings { Effect = Syncfusion.EJ2.Popups.DialogEffect.None };
+    var OkButton = new
+    {
+        content = "OK",
+        isPrimary = true
+    };
+}
+
+
+<div class="row col-lg-12 d-none d-md-block">
+    <form class="form-inline" method=get action="http://www.bing.com/search" target="_blank">
+        <div style="border:1px solid #BBB; padding:5px; margin-bottom:25px;">
+            <center>
+                <span style="color: black;">Search Bing:</span> <input type="text" name="q" size="30" class="form-control" /> <input type="submit" value="Go!" class="btn btn-default" />
+            </center>
+        </div>
+    </form>
+</div>
+
+
+@*<ejs-button id="dialogBtn" content="Open"></ejs-button>*@
+<ejs-dialog id="modal_dialog" animationSettings="Modalanimation" height="50%" width="75%" content="loading..." open="dialogOpen" close="dialogClose" header="Enterprise API" isModal="true" visible="false">
+    <e-dialog-buttons>
+        <e-dialog-dialogbutton buttonModel="OkButton" click="dlgButtonClick"></e-dialog-dialogbutton>
+    </e-dialog-buttons>
+</ejs-dialog>
+
+<div class="row">
+    <div class="tile tile-medium tile-teal" onclick="ShowDlg('huapi');">
+        <h1 class="m-b-1"><i class="fas fa-exclamation-circle fa-2x"></i></h1>
+        <h3 class="tile-text">Welcome</h3>
+    </div>
+    <div class="tile tile-wide" onclick="location.href = '/jobs';">
+        <h1 class="m-b-1"><i class="fas fa-calendar fa-2x"></i></h1>
+        <h3 class="tile-text">Scheduled Jobs</h3>
+    </div>
+    <div class=" tile tile-wide tile-blue" onclick="location.href = '/scrapeforms';">
+        <h1 class="m-b-1"><i class="fas fa-file-download fa-2x"></i></h1>
+        <h3 class="tile-text">Scrape Forms</h3>
+    </div>
+    <div class="tile tile-medium tile-blue" onclick="location.href = '/passwordgen';">
+        <h2 class="m-b-1"><i class="fas fa-user-secret fa-2x"></i></h2>
+        <h4 class="tile-text">Password Gen</h4>
+    </div>
+    <div class="tile tile-medium tile-concrete" onclick="location.href = '/swagger';">
+        <h1 class="m-b-1"><i class="fas fa-book fa-2x"></i></h1>
+        <h3 class="tile-text">API Docs</h3>
+    </div>
+    <div class="tile tile-medium tile-concrete" onclick="gotoLogs();">
+        <h1 class="m-b-1"><i class="fas fa-clipboard fa-2x"></i></h1>
+        <h3 class="tile-text">Logs</h3>
+    </div>
+    <div class="tile tile-medium tile-orange" onclick="location.href = '/settings';">
+        <h1 class="m-b-1"><i class="fas fa-cogs fa-2x"></i></h1>
+        <h3 class="tile-text">Settings</h3>
+    </div>
+</div>
+
+
+<style>
+    #target .control-wrapper {
+        margin: 0px;
+    }
+
+    #target {
+        min-height: 350px;
+    }
+
+    @@media screen and (min-width: 150px) and (max-width: 480px) {
+        .control-section {
+            margin-bottom: 30px;
+        }
+
+        .control-wrapper {
+            margin-bottom: 0px;
+        }
+    }
+
+    .e-badge.e-badge-overlap {
+        transform: translateX(-130%);
+        z-index: 100;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function gotoLogs() {
+            var newurl = 'http://' + location.hostname + ':5341';
+            location.href = newurl;
+            return false;
+        }
+
+        $(document).ready(function () {
+
+        });
+    </script>
+}
+
+@section PreScripts {
+    <script>
+        var dc = "huapi";
+        function ShowDlg(docname) {
+            dc = docname;
+            var dialogObj = document.getElementById("modal_dialog");
+            dialogObj.ej2_instances[0].show();
+        }
+
+        function dialogClose() {
+            //            document.getElementById('dialogBtn').style.display = 'block';
+        }
+        function dialogOpen() {
+            var dialogObj = document.getElementById("modal_dialog").ej2_instances[0];
+            var ajax = new ej.base.Ajax('./content/' + dc + '.html', 'GET', true);
+            ajax.send().then();
+            ajax.onSuccess = function (data) {
+                // Configure the pipeline with all advanced extensions active
+                dialogObj.setProperties(
+                    { content: data }
+                );
+            };
+            ajax.onFailure = function (data) {
+                dialogObj.setProperties(
+                    { content: "Failed to load document. Make sure the file exists." }
+                );
+
+            };
+        }
+        function dlgButtonClick() {
+            var dialogObj = document.getElementById("modal_dialog");
+            dialogObj.ej2_instances[0].hide();
+        }
+    </script>
+}

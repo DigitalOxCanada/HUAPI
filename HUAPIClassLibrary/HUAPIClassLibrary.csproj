@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20180825210133_SMSCarrier.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Context\Custom\" />
+    <Folder Include="Entities\Generated\" />
+    <Folder Include="Enums\Custom\" />
+    <Folder Include="Enums\Generated\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.2" />
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="HUAPI.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HUAPI.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="HUAPI.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HUAPI.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,95 @@
+﻿@page
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Charts
+@model HUAPICore.Pages.EMR.User.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    var MaxUsers = 75.0;
+    var Percentage = Convert.ToInt16(Model.Users / MaxUsers * 100);
+}
+
+<h2>EMR Users</h2>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">Logged in Users (@MaxUsers = 100%)</div>
+        <div class="col-lg-12 card-body">
+            <div id="sessionnow"  class="col-lg-10" style="height: 150px;">
+@Html.EJS().LinearGauge("sessionnow").Width("80%").Load("onGaugeLoad").Orientation(Syncfusion.EJ2.LinearGauge.Orientation.Horizontal).Axes(new List<Syncfusion.EJ2.LinearGauge.LinearGaugeAxis> {
+            new Syncfusion.EJ2.LinearGauge.LinearGaugeAxis
+            {
+                Line = new Syncfusion.EJ2.LinearGauge.LinearGaugeLine { Width = 0 },
+                Ranges = new List<Syncfusion.EJ2.LinearGauge.LinearGaugeRange>
+                {
+                    new Syncfusion.EJ2.LinearGauge.LinearGaugeRange
+                    {
+                        Start = 0.1, End = 60, Color = "#30B32D",StartWidth = 15, EndWidth = 15
+                    },
+                     new Syncfusion.EJ2.LinearGauge.LinearGaugeRange
+                    {
+                        Start = 60, End = 80, Color = "#FFDF00",StartWidth = 15, EndWidth = 15
+                    },
+                   new Syncfusion.EJ2.LinearGauge.LinearGaugeRange
+                    {
+                        Start = 80, End = 100, Color = "#F03E3E",StartWidth = 15, EndWidth = 15
+                    }
+                },
+                Pointers = new List<Syncfusion.EJ2.LinearGauge.LinearGaugePointer>
+                {
+                    new Syncfusion.EJ2.LinearGauge.LinearGaugePointer
+                    {
+                        Value = Percentage, Height=10,Width=10,Placement = Syncfusion.EJ2.LinearGauge.Placement.Near,Color="#757575",
+                        Offset =-30,MarkerType = Syncfusion.EJ2.LinearGauge.MarkerType.Triangle
+                    }
+                },
+                MajorTicks = new Syncfusion.EJ2.LinearGauge.LinearGaugeTick { Height = 10, Width = 1 },
+                MinorTicks = new Syncfusion.EJ2.LinearGauge.LinearGaugeTick { Height = 0 , Width = 0 },
+                LabelStyle = new Syncfusion.EJ2.LinearGauge.LinearGaugeLabel { Format = "{value}%", Offset = 30 },
+            }
+        }).Annotations(new List<Syncfusion.EJ2.LinearGauge.LinearGaugeAnnotation> {
+            new Syncfusion.EJ2.LinearGauge.LinearGaugeAnnotation
+            {
+                Content = "<div id='pointer' style='width:20px;'><h1 style='font-size:18px;color:#424242;white-space:nowrap'>" + Percentage + "%</h1></div>",
+                AxisIndex = 0, AxisValue = Percentage, ZIndex = "1", Y = -50
+            }
+        }).Render();
+            </div>
+        </div>
+        <div class="card-footer">
+            Users: @Model.Users &middot; Sessions: @Model.Sessions
+        </div>
+    </div>
+
+    <br />
+    <div class="card">
+        <div class="card-header">Concurrent Sessions Today</div>
+        <div class="col-lg-12 card-body">
+            <div id="sessionstoday" style="height: 150px;">
+                @Html.EJS().Sparkline("sessionstoday").Format("n").UseGroupingSeparator(true).Load("sparkload").TooltipSettings(tool => tool.Visible(true).Format("${xval} : ${yval}").TrackLineSettings(new SparklineTrackLineSettings { Visible = true, Color = "#fc5070", Width = 2 })).DataSource(@Model.datasource).Height("150px").Width("90%").LineWidth(2).Type(SparklineType.Line).ValueType(SparklineValueType.Category).Fill("#3C78EF").NegativePointColor("#fc5070").XName("xval").YName("yval").Render()
+            </div>
+        </div>
+        <div class="card-footer">
+            Peak Users: @ViewData["peakusers"] &middot; Peak Sessions: @ViewData["peaksessions"]
+        </div>
+    </div>
+</div>
+
+<script>
+    function sparkload(args) {
+        var theme = location.hash.split('/')[1];
+        theme = theme ? theme : 'bootstrap';
+        args.sparkline.theme = (theme.charAt(0).toUpperCase() + theme.slice(1));
+    }
+
+    var gauge;
+    function onGaugeLoad(sender) {
+        var selectedTheme = location.hash.split('/')[1];
+        selectedTheme = selectedTheme ? selectedTheme : 'bootstrap';
+        sender.gauge.theme = (selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1));
+        for (var i = 0; i < sender.gauge.annotations.length; i++) {
+            sender.gauge.annotations[i].zIndex = "1";
+        }
+        gauge = sender.gauge;
+    }
+
+</script>
