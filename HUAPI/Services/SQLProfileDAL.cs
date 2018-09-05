@@ -1,8 +1,8 @@
-﻿using HUAPIClassLibrary;
+﻿using Hangfire;
+using HUAPIClassLibrary;
 using HUAPICore.Data;
 using HUAPICore.Interfaces;
 using HUAPICore.Models;
-using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -58,7 +58,9 @@ namespace HUAPICore.Services
             _logger.LogDebug($"profile db data context time required for the first query: {stopwatch.ElapsedMilliseconds / 1000} seconds.");
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
 
@@ -334,38 +336,6 @@ namespace HUAPICore.Services
         /// <param name="formname"></param>
         public async Task<int> GenerateScrapeFormQueries(string formname)
         {
-            //var form = from p in _profiledbcontext.CdoTermsetTerm
-            //           join pm in _profiledbcontext.CdoTransdata on p.Oid equals pm.Term
-            //           where pm.Versionmax > 1000000 && pm.Collection == null
-
-            //           select new { OID = pm.Oid, TRANS = pm.Trans };
-
-            //            string q = $@"          
-            //                SELECT *
-            //                FROM CDO_TRANSDATA
-            //                WHERE (CDO_TRANSDATA.VERSIONMAX > 1000000) and CDO_TRANSDATA.COLLECTION is null
-            //                and dbo.GetTextByTag(CDO_TRANSDATA.TEXTS, 'TI') = ''  and dbo.GETTEXTBYTAG(CDO_TRANSDATA.TEXTS, 'NM') = '{formname}'
-            //            ";
-
-            //            q = $@"
-            //select cdt.COLLECTION, cdt.DT_MODIFIED, cdt.OID, ctt.DESCRIPTION, ctt.CODE  from CDO_TRANSDATA cdt inner join cdo_termset_term ctt on ctt.oid = cdt.term WHERE trans = (
-            //SELECT      top 1 trans
-            //FROM CDO_TRANSDATA 
-            //WHERE       
-            //(CDO_TRANSDATA.VERSIONMAX > 1000000) and CDO_TRANSDATA.COLLECTION is null
-            //and dbo.GetTextByTag(cdo_transdata.TEXTS, 'TI') = '' and dbo.GETTEXTBYTAG(cdo_transdata.TEXTS, 'NM') = 'Client Summary Form' --'IMM Selection TEST FORM'
-            //) and VERSIONMAX > 1000000
-            //";
-
-            //var forminfo = _profiledbcontext.CdoTransdata.FromSql(q).AsNoTracking().SingleOrDefault();
-
-            //var forminfo = _profiledbcontext.Database.ExecuteSqlCommand("exec huapiGetFormTransData @formname", formname );
-
-
-            // get list of HRIs that make up the form by name
-            //_profiledbcontext.ChangeTracker.AutoDetectChangesEnabled = false;
-            //_profiledbcontext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
             List<FormTransData> AllCols = new List<FormTransData>();
 
             using (var command = _profiledbcontext.Database.GetDbConnection().CreateCommand())
@@ -463,18 +433,17 @@ namespace HUAPICore.Services
 
             ScrapeQuery sq = new ScrapeQuery("ScrapeQuery", formname, "General", DateTime.Now, false, dropstr, createstr, scrapefields.ToString(), 1000);
 
+            //now insert the SQ into the HUAPI database and then we can call an api to schedule the scraping to occur.
             _huapidbcontext.Add<ScrapeQuery>(sq);
             await _huapidbcontext.SaveChangesAsync();
 
-            //now insert the SQ into the HUAPI database and then we can call an api to schedule the scraping to occur.
-
-            //select CDO_TRANSDATA.*, CDO_TERMSET_TERM.*
-            //from CDO_TRANSDATA inner join cdo_termset_term on cdo_transdata.term = cdo_termset_term.oid
-            //where cdo_transdata.trans = @trans and cdo_transdata.versionmax > 1000000
-            //order by ORD
             return 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="formname"></param>
         [DisableConcurrentExecution(3600)]  //1hr
         public void ScrapeCustomForms(string formname)
         {
@@ -483,11 +452,6 @@ namespace HUAPICore.Services
             {
                 return;
             }
-
-            ////scraping_is_running = true;
-            //if (!scraping_is_running)
-            //{
-            //    scraping_is_running = true;
 
             List<ScrapeQuery> queries = new List<ScrapeQuery>();
 
@@ -500,26 +464,8 @@ namespace HUAPICore.Services
                 queries = (from p in _huapidbcontext.ScrapeQuery where p.IsActive == true && p.FormName == formname select p).ToList();
             }
 
-            //foreach(var l in list)
-            //{
-            //    _logger.LogDebug(l.FormName);
-            //}
-
             _logger.LogInformation($"Scraping custom forms [{queries.Count}]");
 
-            //BackgroundWorker bw = new BackgroundWorker
-            //{
-            //    // this allows our worker to report progress during work
-            //    WorkerReportsProgress = true
-            //};
-
-            //// what to do in the background thread
-            //bw.DoWork += new DoWorkEventHandler(
-            //        delegate (object o, DoWorkEventArgs args)
-            //        {
-            //            BackgroundWorker b = o as BackgroundWorker;
-
-            //                        List<ScrapeQuery> list = args.Argument as List<ScrapeQuery>;
             List<ScrapeQuery> list = queries as List<ScrapeQuery>;
             int total = list.Count;
             int processed = 0;
@@ -574,220 +520,58 @@ namespace HUAPICore.Services
 
                     connection.Close();
                 }
-                //}
                 processed++;
-                //                            b.ReportProgress((int)(((float)100 / (float)total) * processed));    //get total in percentage per item * how many processed = the % processed
                 sw.Stop();
-                //                            Task t = new Task(() => AllControllers.Metric_TrackDuration($"Scrape {item.FormName}", started, sw.Elapsed, customConfig));
-                //                            t.Start();
             }
-            // do some simple processing for 10 seconds
-            //for (int i = 1; i <= 10; i++)
-            //{
-            //    // report the progress in percent
-            //    b.ReportProgress(i * 10);
-            //    Thread.Sleep(1000);
-            //}
-
-            //                    });
-
-            //                // what to do when progress changed (update the progress bar for example)
-            //                bw.ProgressChanged += new ProgressChangedEventHandler(
-            //                    delegate (object o, ProgressChangedEventArgs args)
-            //                    {
-            //                        _logger.LogInformation($"Scraping Profile @ {args.ProgressPercentage}%");
-            //                    });
-
-            //                // what to do when worker completes its task (notify the user)
-            //                bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
-            //                    delegate (object o, RunWorkerCompletedEventArgs args)
-            //                    {
-            //                        _logger.LogInformation("Scraping Profile custom forms completed.");
-            ////                        scraping_is_running = false;
-            //                    });
-
-            //                bw.RunWorkerAsync(queries);
-
-            //    Hashtable ht = new Hashtable();
-            //    ht.Add("Action", "Processing Forms");
-            //    ht.Add("Forms", from q in queries select q.FormName);
-
-            //    return Ok(JsonConvert.SerializeObject(ht, Formatting.Indented));
-            //}
-            //else
-            //{
-            //    return Ok("{\"Action\":\"Non Taken\", \"Reason\":\"Scraping already in progress\"}");
-            //}
-
-            //return Ok();
-
-
         }
 
 
-        //public object GetFormsToScrape()
-        //{
-        //    MongoClient mc = new MongoClient(mongoServerAddress);
-        //    IMongoDatabase db = mc.GetDatabase(_customConfig.Value.HUAPI.database);
-        //    var collection = db.GetCollection<ProfileScrapeQuery>("ProfileStage");
-
-        //    var queries = collection.Find("{}").Sort("{ \"Order\": 1 }").Project<ProfileScrapeQuery>(Builders<ProfileScrapeQuery>.Projection.Exclude(p => p.SQL).Exclude(p => p.DELTASQL)).ToList();
-
-        //    return queries;
-        //}
-
-        //public object ProfileScrapeForm(string formName)
-        //{
-        //    //isScraping == true;
-        //    if (!IsScraping)
-        //    {
-        //        IsScraping = true;
-
-        //        //TODO get table(s) queries to execute
-        //        MongoClient mc = new MongoClient(mongoServerAddress);
-        //        IMongoDatabase db = mc.GetDatabase(_customConfig.Value.HUAPI.database);
-        //        var collection = db.GetCollection<ProfileScrapeQuery>("ProfileStage");
-        //        //string specific = $", {{\"FormName\": /.*{FormName}.*/i }}";
-        //        string specific = $", {{\"FormName\": \"{formName}\" }}";
-        //        //    $"{{ Members: /.*{username}.*/i }}"
-
-        //        if (formName.ToLower().Equals("all"))
-        //        {
-        //            specific = "";
-        //        }
-
-        //        List<ProfileScrapeQuery> queries = collection.Find("{ $and: [{\"DocType\": \"ScrapeQuery\"}, {\"Active\" : true }" + specific + " ]  }").Sort("{ \"Order\": 1 }").ToList(); //.Project("{\"Demographics\": 1}").ToList();
-
-        //        //_logger.LogInformation($"Scraping Forms [{queries.Count}]");
-
-
-        //        BackgroundWorker bw = new BackgroundWorker();
-
-        //        // this allows our worker to report progress during work
-        //        bw.WorkerReportsProgress = true;
-
-        //        // what to do in the background thread
-        //        bw.DoWork += new DoWorkEventHandler(
-        //            delegate (object o, DoWorkEventArgs args)
-        //            {
-        //                BackgroundWorker b = o as BackgroundWorker;
-        //                List<ProfileScrapeQuery> list = args.Argument as List<ProfileScrapeQuery>;
-        //                int total = list.Count;
-        //                int processed = 0;
-        //                foreach (var item in list)
-        //                {
-        //                    var sw = _sysRepo.MetricTracker();
-        //                    //var sw = Stopwatch.StartNew();
-        //                    //var started = DateTime.Now;
-
-        //                    //_logger.LogDebug($"Scraping Profile Form {item.FormName}");
-        //                    foreach (var sql in item.SQL)
-        //                    {
-        //                        //perform sql execution and wait for it to finish
-        //                        //update progress
-        //                        //move on
-
-        //                        using (SqlConnection connection = new SqlConnection(ProfileProductionConnectionString))
-        //                        {
-        //                            SqlCommand command = new SqlCommand(sql.sql, connection);
-        //                            command.CommandTimeout = 1800;  //30 minutes
-        //                            connection.Open();
-        //                            //_logger.LogDebug($"...executing {sql.action}");
-        //                            try
-        //                            {
-        //                                var ret = command.ExecuteNonQuery();
-        //                                Thread.Sleep(250);  //just delay to let things settle down on network
-        //                            }
-        //                            catch (Exception ex)
-        //                            {
-        //                                //_logger.LogError($"SQL Error: {ex.Message}");
-        //                            }
-        //                            connection.Close();
-        //                        }
-        //                    }
-        //                    processed++;
-        //                    b.ReportProgress((int)(((float)100 / (float)total) * processed));    //get total in percentage per item * how many processed = the % processed
-        //                    _sysRepo.MetricTracker($"Scrape {item.FormName}", sw);
-
-        //                    //sw.Stop();
-        //                    //Task t = new Task(() => _sysRepo.Metric_TrackDuration($"Scrape {item.FormName}", started, sw.Elapsed));
-        //                    //t.Start();
-        //                    Thread.Sleep(100);  //this way the process changed message appears before looping to next item and it's message showing up ahead.
-        //                }
-        //                // do some simple processing for 10 seconds
-        //                //for (int i = 1; i <= 10; i++)
-        //                //{
-        //                //    // report the progress in percent
-        //                //    b.ReportProgress(i * 10);
-        //                //    Thread.Sleep(1000);
-        //                //}
-
-        //            });
-
-        //        // what to do when progress changed (update the progress bar for example)
-        //        bw.ProgressChanged += new ProgressChangedEventHandler(
-        //            delegate (object o, ProgressChangedEventArgs args)
-        //            {
-        //                //_logger.LogInformation($"Scraping Profile @ {args.ProgressPercentage}%");
-        //            });
-
-        //        // what to do when worker completes its task (notify the user)
-        //        bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
-        //            delegate (object o, RunWorkerCompletedEventArgs args)
-        //            {
-        //                //_logger.LogInformation("Scraping Profile completed.");
-        //                IsScraping = false;
-        //            });
-
-        //        bw.RunWorkerAsync(queries);
-
-        //        Hashtable ht = new Hashtable();
-        //        ht.Add("Action", "Processing Forms");
-        //        ht.Add("Forms", from q in queries select q.FormName);
-
-        //        return ht;
-        //    }
-        //    else
-        //    {
-        //        return new { Action = "Non Taken", Reason = "Scraping already in progress" };
-        //    }
-        //}
-
-        //public List<Pppu> GetEmployeesOfManager(string mgrname)
-        //{
-            
-        //    //List<Pppu> list = _profiledbcontext.Pppu
-
-        //    return list;
-        //}
-
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<Appointmentaudit> GetAppointmentAudits()
         {
             return _profiledbcontext.Appointmentaudit.AsNoTracking().ToList();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<Audit> GetAudits()
         {
             return _profiledbcontext.Audit.AsNoTracking().ToList();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<CaseAudit> GetCaseAudits()
         {
             return _profiledbcontext.CaseAudit.AsNoTracking().ToList();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<CaseAuditDetails> GetCaseAuditDetails()
         {
             return _profiledbcontext.CaseAuditDetails.AsNoTracking().ToList();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<PatientAudit> GetPatientAudits()
         {
             return _profiledbcontext.PatientAudit.AsNoTracking().ToList();
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private string BuildPattern()
         {
             var pattern = "^" +                                                       // beginning of string
@@ -806,33 +590,54 @@ namespace HUAPICore.Services
             return pattern;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private string GetStreetPrefixes()
         {
             return "TE|NW|HW|RD|E|MA|EI|NO|AU|SE|GR|OL|W|MM|OM|SW|ME|HA|JO|OV|S|OH|NE|K|N";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private string GetStreetTypes()
         {
             return StreetCodesList;
             //return "TE|STCT|DR|SPSGS|PARK|GRV|CRK|XING|BR|PINE|CTS|TRL|VI|RD|PIKE|MA|LO|TER|UN|CIR|WALK|CO|RUN|FRD|LDG|ML|AVE|NO|PA|SQ|BLVD|VLGS|VLY|GR|LN|HOUSE|VLG|OL|STA|CH|ROW|EXT|JC|BLDG|FLD|CT|HTS|MOTEL|PKWY|COOP|ACRES|ESTS|SCH|HL|CORD|ST|CLB|FLDS|PT|STPL|MDWS|APTS|ME|LOOP|SMT|RDG|UNIV|PLZ|MDW|EXPY|WALL|TR|FLS|HBR|TRFY|BCH|CRST|CI|PKY|OV|RNCH|CV|DIV|WA|S|WAY|I|CTR|VIS|PL|ANX|BL|ST TER|DM|STHY|RR|MNR";
         }
 
-        private  string GetStreetSuffixes()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private string GetStreetSuffixes()
         {
             return "NW|E|SE|W|SW|S|NE|N";
         }
 
-        private  string GetAptTypes()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private string GetAptTypes()
         {
             return "APT|UNIT|SUITE";
         }
 
         private string StreetCodesList;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ptntid"></param>
+        /// <returns></returns>
         public bool IsDemographicsValid(long ptntid)
         {
             var streettypes = _huapidbcontext.StreetTypes.ToList();
-            if(streettypes.Count<1)
+            if (streettypes.Count < 1)
             {
                 throw new Exception("Street Types are missing.");
             }
@@ -840,31 +645,49 @@ namespace HUAPICore.Services
             //make | delimeted string used for RegEx matching
             StreetCodesList = string.Join("|", (from p in streettypes select p.Code).ToArray());
             var pat = _profiledbcontext.Patient.Where(p => p.PtntId == ptntid && p.PtntDeletedid == 0 && p.PartitionId == 3).SingleOrDefault();
-            if(pat == null)
+            if (pat == null)
             {
                 throw new Exception($"Patient {ptntid} couldn't be found.");
             }
 
-            if (string.IsNullOrEmpty(pat.PtntStreet1)) return false;
-            if (string.IsNullOrWhiteSpace(pat.PtntStreet1.Trim())) return false;
+            if (string.IsNullOrEmpty(pat.PtntStreet1))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(pat.PtntStreet1.Trim()))
+            {
+                return false;
+            }
 
             var result = ParseAddress(pat.PtntStreet1.Trim());
-            if (result == null) return false;
+            if (result == null)
+            {
+                return false;
+            }
+
             if (string.IsNullOrEmpty(result.HouseNumber) || string.IsNullOrEmpty(result.StreetType) || string.IsNullOrEmpty(result.HouseNumber))
             {
                 return false;
             }
-            if(!string.IsNullOrEmpty(result.StreetName))
+            if (!string.IsNullOrEmpty(result.StreetName))
             {
                 return true;
             }
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public StreetAddress ParseAddress(string address)
         {
             if (string.IsNullOrEmpty(address))
+            {
                 return null;
+            }
 
             StreetAddress result;
             var input = address.ToUpper();

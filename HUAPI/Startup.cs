@@ -1,10 +1,10 @@
+using Hangfire;
 using HUAPIClassLibrary;
 using HUAPICore.Data;
 using HUAPICore.Interfaces;
 using HUAPICore.Services;
 using HUAPICore.Services.Interfaces;
 using HUAPICore.Services.Jaffa;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

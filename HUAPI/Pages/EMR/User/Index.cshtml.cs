@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HUAPICore.Interfaces;
+﻿using HUAPICore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HUAPICore.Pages.EMR.User
 {
@@ -32,25 +31,21 @@ namespace HUAPICore.Pages.EMR.User
         [BindProperty]
         public long Users { get; private set; }
 
-
-        //[BindProperty]
-        //public long Percentage { get; private set; }
-
         public void OnGet()
         {
             Sessions = -1;
 
             var ret = _dal.GetConcurrentUsersLatest();
-            if(ret!=null) {
+            if (ret != null)
+            {
                 Sessions = ret.CulSessions;
                 Users = ret.CulUsers;
-//                Percentage = Convert.ToInt64(Convert.ToDouble(Users) / Convert.ToDouble() * 100);
             }
 
             var all = _dal.GetConcurrentUsers(DateTime.Today); // DateTime.Parse("2016-01-12"));       //DateTime.Now);
             int cnt = 0;
             datasource = new List<data>();
-            foreach(var a in all)
+            foreach (var a in all)
             {
                 cnt++;
                 datasource.Add(new data { x = cnt, xval = a.CulDate.ToString(), yval = a.CulSessions });
