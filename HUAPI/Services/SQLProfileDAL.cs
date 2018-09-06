@@ -270,12 +270,22 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Check if the Test Clients group exists
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true or false</returns>
         public bool TestUserGroupExists()
         {
-            var it = _profiledbcontext.ProfilePatientGroup.Where(x => x.Name == "Test Clients");
+            return IsUserGroupExists("Test Clients");
+        }
+
+        /// <summary>
+        /// Checks if specified group name exists as a group
+        /// </summary>
+        /// <param name="groupname"></param>
+        /// <returns>true or false</returns>
+        public bool IsUserGroupExists(string groupname)
+        {
+            var it = _profiledbcontext.ProfilePatientGroup.Where(x => x.Name == groupname); //TODO make this case insensitive??
             if (it == null)
             {
                 return false;
@@ -284,26 +294,16 @@ namespace HUAPICore.Services
             return Convert.ToBoolean(it.Count());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public string GetVersionInfo()
-        {
-            //            var it = _ptc.DatabaseInfo.ToList();
-
-            //return it;
-            return "unknown";
-        }
-
-
 
         /// <summary>
-        /// 
+        /// Gets list of all forms from cdotrans
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of CustomFormDef</returns>
         public List<CustomFormDef> GetListOfAllForms()
         {
+            // ** couldn't get this fully working from query so we made it into a stored procedure.
+            //TODO remove stored procedure in favour of LINQ.
+
             //var forms = (from term in _profiledbcontext.CdoTermsetTerm
             //             join transdata in _profiledbcontext.CdoTransdata on term.Oid equals transdata.Term
             //             where transdata.Versionmax > 1000000 && transdata.Collection == null
@@ -315,6 +315,14 @@ namespace HUAPICore.Services
         }
 
 
+        /// <summary>
+        /// Recursive method to check if a description already exists in the AllCols list.
+        /// If it does then we increment a counter which is used to append to the description to create a unique description.
+        /// </summary>
+        /// <param name="AllCols"></param>
+        /// <param name="desc"></param>
+        /// <param name="cntr"></param>
+        /// <returns>cntr integer</returns>
         private int RecursiveCheckNameExists(List<FormTransData> AllCols, string desc, int cntr)
         {
             var nametocheck = desc;
@@ -331,9 +339,10 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Creates the Create Table, Drop Table, Select queries of the given formname.
+        /// The queries are stored, form is not active by default.
         /// </summary>
-        /// <param name="formname"></param>
+        /// <param name="formname">Name of the form.</param>
         public async Task<int> GenerateScrapeFormQueries(string formname)
         {
             List<FormTransData> AllCols = new List<FormTransData>();
@@ -441,9 +450,9 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Scrape specified or All custom forms that are active.
         /// </summary>
-        /// <param name="formname"></param>
+        /// <param name="formname">Name of the active form or All to do all active forms.</param>
         [DisableConcurrentExecution(3600)]  //1hr
         public void ScrapeCustomForms(string formname)
         {
@@ -527,7 +536,7 @@ namespace HUAPICore.Services
 
 
         /// <summary>
-        /// 
+        /// Get list of Appointment Audit records.
         /// </summary>
         /// <returns></returns>
         public List<Appointmentaudit> GetAppointmentAudits()
@@ -536,31 +545,34 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Get list of Audit records.
         /// </summary>
         /// <returns></returns>
         public List<Audit> GetAudits()
         {
             return _profiledbcontext.Audit.AsNoTracking().ToList();
         }
+
         /// <summary>
-        /// 
+        /// Get list of Case Audit records.
         /// </summary>
         /// <returns></returns>
         public List<CaseAudit> GetCaseAudits()
         {
             return _profiledbcontext.CaseAudit.AsNoTracking().ToList();
         }
+
         /// <summary>
-        /// 
+        /// Get list of Case Audit Detail records.
         /// </summary>
         /// <returns></returns>
         public List<CaseAuditDetails> GetCaseAuditDetails()
         {
             return _profiledbcontext.CaseAuditDetails.AsNoTracking().ToList();
         }
+
         /// <summary>
-        /// 
+        /// Get list of Patient Audit records.
         /// </summary>
         /// <returns></returns>
         public List<PatientAudit> GetPatientAudits()
@@ -569,9 +581,9 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Create the regular expression to check for all the demographic parts.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>regular express string</returns>
         private string BuildPattern()
         {
             var pattern = "^" +                                                       // beginning of string
@@ -591,18 +603,18 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Street prefixes, i.e. SE = south east
         /// </summary>
-        /// <returns></returns>
+        /// <returns>pipe delimated string</returns>
         private string GetStreetPrefixes()
         {
             return "TE|NW|HW|RD|E|MA|EI|NO|AU|SE|GR|OL|W|MM|OM|SW|ME|HA|JO|OV|S|OH|NE|K|N";
         }
 
         /// <summary>
-        /// 
+        /// Get list of street types, i.e. RD = road
         /// </summary>
-        /// <returns></returns>
+        /// <returns>pipe delimated string</returns>
         private string GetStreetTypes()
         {
             return StreetCodesList;
@@ -610,18 +622,18 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Get list of street suffixes, i.e. NW = north west
         /// </summary>
-        /// <returns></returns>
+        /// <returns>pipe delimated string</returns>
         private string GetStreetSuffixes()
         {
             return "NW|E|SE|W|SW|S|NE|N";
         }
 
         /// <summary>
-        /// 
+        /// Get list of apartment types.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>pipe delimated string</returns>
         private string GetAptTypes()
         {
             return "APT|UNIT|SUITE";
@@ -630,10 +642,10 @@ namespace HUAPICore.Services
         private string StreetCodesList;
 
         /// <summary>
-        /// 
+        /// Checks the patients demographics for missing or invalid address info.
         /// </summary>
-        /// <param name="ptntid"></param>
-        /// <returns></returns>
+        /// <param name="ptntid">internal patient identifier</param>
+        /// <returns>true or false</returns>
         public bool IsDemographicsValid(long ptntid)
         {
             var streettypes = _huapidbcontext.StreetTypes.ToList();
@@ -678,10 +690,10 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Performs regular expression against address.
         /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
+        /// <param name="address">string address</param>
+        /// <returns>StreetAddress structure</returns>
         public StreetAddress ParseAddress(string address)
         {
             if (string.IsNullOrEmpty(address))

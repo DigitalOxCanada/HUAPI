@@ -7,7 +7,7 @@ using System;
 namespace HUAPICore.Controllers
 {
     /// <summary>
-    /// This controller targets the Appointments within the EMR
+    /// EMR appointments controller
     /// </summary>
     [Produces("application/json")]
     [ApiController]

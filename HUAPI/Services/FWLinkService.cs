@@ -1,7 +1,5 @@
 ﻿using HUAPIClassLibrary;
-using HUAPICore.Data;
 using HUAPICore.Interfaces;
-using HUAPICore.Models;
 using Microsoft.Extensions.Options;
 using System.Linq;
 
@@ -9,7 +7,7 @@ using System.Linq;
 namespace HUAPICore.Services
 {
     /// <summary>
-    /// 
+    /// Forwarding Links
     /// </summary>
     public class FWLinkService : IFWLinkService
     {
@@ -17,9 +15,10 @@ namespace HUAPICore.Services
         private HUAPIDBContext _context;
 
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="cfg"></param>
+        /// <param name="ctx"></param>
         public FWLinkService(IOptions<CustomConfig> cfg, HUAPIDBContext ctx)
         {
             _customConfig = cfg;
@@ -27,7 +26,7 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Get a link by its id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -38,7 +37,7 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Get a link by its url
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
@@ -49,7 +48,7 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Add a new link
         /// </summary>
         /// <param name="item"></param>
         public void Insert(FWLink item)
@@ -59,21 +58,21 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Update a link
         /// </summary>
         /// <param name="item"></param>
         public void Update(FWLink item)
         {
-
+            //TODO update an existing link
         }
 
         /// <summary>
-        /// 
+        /// Delete a link
         /// </summary>
         /// <param name="id"></param>
         public void Delete(long id)
         {
-
+            //TODO delete an existing link, *should we even have this?
         }
 
     }

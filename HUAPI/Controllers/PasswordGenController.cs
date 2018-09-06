@@ -27,6 +27,11 @@ namespace HUAPICore.Controllers
         [HttpPost("api/v1/PasswordGen/Generate")]
         public IActionResult Generate([FromBody]PasswordGenModel body)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             List<string> pwds = new List<string>();
 
             PasswordGen pwdGen = new PasswordGen()

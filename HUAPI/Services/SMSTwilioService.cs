@@ -1,16 +1,11 @@
 ﻿using HUAPICore.Interfaces;
 using HUAPICore.Services.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Twilio.TwiML;
 using Twilio;
-using Twilio.Types;
 using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace HUAPICore.Services
 {
@@ -20,10 +15,10 @@ namespace HUAPICore.Services
     public class SMSTwilioService : SMSServiceBase, ISMSService
     {
         private readonly ISettings _settings;
-        public IOptions<CustomConfig> _cfg { get; }
+        private IOptions<CustomConfig> _cfg { get; }
 
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="settings"></param>
         /// <param name="cfg"></param>
@@ -34,7 +29,7 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Send a message using the Twilio api. If testmode is set then use testing values.
         /// </summary>
         /// <param name="number"></param>
         /// <param name="message"></param>

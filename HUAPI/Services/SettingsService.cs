@@ -1,7 +1,5 @@
 ﻿using HUAPIClassLibrary;
-using HUAPICore.Data;
 using HUAPICore.Interfaces;
-using HUAPICore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -74,7 +72,7 @@ namespace HUAPICore.Services
         }
 
         /// <summary>
-        /// 
+        /// Make changes to a custom setting.
         /// </summary>
         /// <param name="setting"></param>
         /// <returns></returns>
@@ -82,7 +80,11 @@ namespace HUAPICore.Services
         {
             var dbSetting = (from p in _huapidbcontext.HUAPISettings where p.Name == setting.Name select p).SingleOrDefault();
 
-            if (dbSetting == null) return false;
+            if (dbSetting == null)
+            {
+                return false;
+            }
+
             dbSetting.Value = setting.Value;    //update the single record read from the database and write it back
             _huapidbcontext.HUAPISettings.Update(dbSetting);
             _huapidbcontext.SaveChanges();
@@ -92,7 +94,7 @@ namespace HUAPICore.Services
             return true;
         }
 
-        
+
         /// <summary>
         /// dispose must exist to be interface compliant
         /// </summary>

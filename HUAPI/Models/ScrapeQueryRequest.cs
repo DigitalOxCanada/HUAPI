@@ -3,10 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HUAPICore.Models
 {
-    public class ProfileStage
-    {
-    }
-
     public class ScrapeQueryRequest
     {
         [Required]

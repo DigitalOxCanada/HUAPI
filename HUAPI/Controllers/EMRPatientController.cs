@@ -6,7 +6,7 @@ using System;
 namespace HUAPICore.Controllers
 {
     /// <summary>
-    /// 
+    /// EMR Patients controller
     /// </summary>
     [Produces("application/json")]
     [ApiController]
@@ -16,7 +16,7 @@ namespace HUAPICore.Controllers
         private readonly IProfileDAL _pfd;
 
         /// <summary>
-        /// 
+        /// CTor
         /// </summary>
         /// <param name="pfd"></param>
         /// <param name="config"></param>
@@ -46,9 +46,9 @@ namespace HUAPICore.Controllers
 
 
         /// <summary>
-        /// 
+        /// Get all alerts from specified patient or all patients.
         /// </summary>
-        /// <param name="ptntid"></param>
+        /// <param name="ptntid">internal patient identifier or 0 for all</param>
         /// <returns></returns>
         [HttpGet("api/v1/[controller]/alerts/{ptntid?}")]
         public IActionResult GetAlerts(long ptntid = 0)
@@ -63,9 +63,9 @@ namespace HUAPICore.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Check if demographics are valid
         /// </summary>
-        /// <param name="ptntid"></param>
+        /// <param name="ptntid">internal patient identifier</param>
         /// <returns></returns>
         [HttpGet("api/v1/[controller]/checkaddress/{ptntid:long}")]
         public IActionResult IsDemographicsValid(long ptntid)

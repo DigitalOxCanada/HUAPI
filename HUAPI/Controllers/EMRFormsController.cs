@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 namespace HUAPICore.Controllers
 {
     /// <summary>
-    /// 
+    /// EMR custom forms controller
     /// </summary>
     [Produces("application/json")]
     [ApiController]
@@ -15,7 +15,7 @@ namespace HUAPICore.Controllers
         private readonly IProfileDAL _pfd;
 
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="pfd"></param>
         /// <param name="config"></param>
@@ -26,7 +26,7 @@ namespace HUAPICore.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get a list of all the forms in the EMR system.
         /// </summary>
         /// <returns></returns>
         [HttpGet("api/v1/[controller]/custom")]
@@ -38,7 +38,7 @@ namespace HUAPICore.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Create the queries required to scrape a specified custom form.
         /// </summary>
         /// <param name="FormName"></param>
         /// <returns></returns>
@@ -51,12 +51,6 @@ namespace HUAPICore.Controllers
             return Ok(new { Message = "Completed" });
         }
 
-        //this is for the built in recurring job to scrape custom forms every day.
-        //    public void ScrapeCustomForms()
-        //    {
-        //        _pfd.ScrapeCustomForms("all");
-
-        //    }
 
     }
 }

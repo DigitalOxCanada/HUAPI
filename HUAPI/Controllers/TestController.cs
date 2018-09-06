@@ -12,7 +12,6 @@ namespace HUAPICore.Controllers
     {
         private ILogger<TestController> _logger;
 
-
         /// <summary>
         /// Ctor
         /// </summary>

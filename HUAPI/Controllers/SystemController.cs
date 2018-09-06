@@ -76,16 +76,12 @@ namespace HUAPICore.Controllers
             return Ok(new { Message = reply.Status.ToString() });
         }
 
-        //[HttpGet("api/v1/system/jobs/init")]
-        //public IActionResult SetupJobs()
-        //{
-        //    RecurringJob.AddOrUpdate(() => TestJob(), Cron.Daily);
-        //    return Ok();
-        //}
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestJob()
         {
-            _logger.LogInformation("*************************************");
+            _logger.LogInformation("***********TESTJOB*******************");
         }
 
     }

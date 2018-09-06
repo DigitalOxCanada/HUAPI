@@ -1,12 +1,10 @@
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.Web;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System;
 using HUAPICore.Interfaces;
 using HUAPICore.Services.Interfaces;
 using Microsoft.Extensions.Options;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace HUAPICore.Services
 {
@@ -16,12 +14,12 @@ namespace HUAPICore.Services
     public class SMSWire2AirService : SMSServiceBase, ISMSService
     {
         private readonly ISettings _settings;
-        public IOptions<CustomConfig> _cfg { get; }
+        private IOptions<CustomConfig> _cfg { get; }
 
         static HttpClient client = new HttpClient();
 
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="settings"></param>
         /// <param name="cfg"></param>
@@ -42,7 +40,7 @@ namespace HUAPICore.Services
         public async Task SendMessage(string number, string message, string region, DateTime when)
         {
             // if not IsLive bail
-            if(!Convert.ToBoolean(_settings.Settings["IsLive"]))
+            if (!Convert.ToBoolean(_settings.Settings["IsLive"]))
             {
                 return;
             }

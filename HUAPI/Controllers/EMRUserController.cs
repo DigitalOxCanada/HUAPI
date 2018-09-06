@@ -6,7 +6,7 @@ using System;
 namespace HUAPICore.Controllers
 {
     /// <summary>
-    /// 
+    /// EMR Users controller
     /// </summary>
     [Produces("application/json")]
     [ApiController]
@@ -16,7 +16,7 @@ namespace HUAPICore.Controllers
         private readonly IConfiguration _config;
 
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="pfd"></param>
         /// <param name="config"></param>

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 namespace HUAPICore.Controllers
 {
     /// <summary>
-    /// 
+    /// EMR Auditing controller
     /// </summary>
 //    [Authorize(Roles = "IT Department,Administrators,Leadership Team")]
     [Produces("application/json")]
@@ -16,7 +16,7 @@ namespace HUAPICore.Controllers
         private readonly IProfileDAL _pfd;
 
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="pfd"></param>
         /// <param name="config"></param>

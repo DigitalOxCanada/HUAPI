@@ -24,8 +24,6 @@ namespace HUAPICore.Interfaces
         /// <returns></returns>
         bool AppointmentExists(long id);
 
-        //        List<Patientproblem> GetAllAlerts();
-
         List<ConcurrentUsersLog> GetConcurrentUsers(DateTime dt);
         ConcurrentUsersLog GetConcurrentUsersLatest();
         object GetUserLoggedInInfo(long pppuid);

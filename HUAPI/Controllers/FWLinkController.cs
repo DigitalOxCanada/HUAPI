@@ -1,5 +1,6 @@
 ﻿using HUAPIClassLibrary;
 using HUAPICore.Interfaces;
+using HUAPICore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System;
 namespace HUAPICore.Controllers
 {
     /// <summary>
-    /// FWLink API
+    /// Forwarding Links controller
     /// </summary>
     [Produces("application/json")]
     public class FWLinkController : Controller
@@ -18,31 +19,17 @@ namespace HUAPICore.Controllers
         //        private readonly IHostingEnvironment _hostingEnv;
         //        private readonly IOptions<CustomConfig> _customConfig;
 
-        /// <summary>
-        /// Error codes used to identify problems from this controller
-        /// </summary>
-        public enum ErrorCode
-        {
-            ItemValuesRequired,
-            RecordNotFound,
-            CouldNotCreateItem,
-            CouldNotUpdateItem,
-            CouldNotDeleteItem,
-            ItemExists
-        }
 
         /// <summary>
         /// A URL forwarding service similar to Microsoft's FWLink or a short url.
         /// </summary>
         /// <param name="fwlinkRepository"></param>
         /// <param name="logger"></param>
-        /// <param name="env"></param>
-        /// <param name="cfg"></param>
         public FWLinkController(IFWLinkService fwlinkRepository, ILogger<FWLinkController> logger) // IOptions<CustomConfig> cfg, IHostingEnvironment env
         {
             _fwlinkRepository = fwlinkRepository;
-            //            _customConfig = cfg;
             _logger = logger;
+            //            _customConfig = cfg;
             //            _hostingEnv = env;
         }
 

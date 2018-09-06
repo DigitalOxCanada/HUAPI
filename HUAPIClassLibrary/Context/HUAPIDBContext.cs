@@ -16,27 +16,27 @@ namespace HUAPIClassLibrary
         }
 
         /// <summary>
-        /// Settings in the database for on the live changing.
+        /// Settings in the database for on the fly changing.
         /// </summary>
         public virtual DbSet<CustomSetting> HUAPISettings { get; set; }
 
         /// <summary>
-        /// 
+        /// Scraping Queries for nightly scraping routine.
         /// </summary>
         public virtual DbSet<ScrapeQuery> ScrapeQuery { get; set; }
 
         /// <summary>
-        /// 
+        /// Forwarding links.
         /// </summary>
         public virtual DbSet<FWLink> FWLink { get; set; }
         
         /// <summary>
-        /// 
+        /// List of carriers for the SMS exchange option.
         /// </summary>
         public virtual DbSet<SMSCarrier> SMSCarrier { get; set; }
         
         /// <summary>
-        /// 
+        /// Street types list used for patient demographics.
         /// </summary>
         public virtual DbSet<StreetType> StreetTypes { get; set; }
     }
